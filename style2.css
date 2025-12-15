@@ -1,3 +1,6 @@
+/* ============================
+   Reset & Base Styles
+============================ */
 * {
     box-sizing: border-box;
     font-family: "Tahoma", Arial, sans-serif;
@@ -9,7 +12,9 @@ body {
     direction: rtl;
 }
 
-/* الحاوية */
+/* ============================
+   Container
+============================ */
 .container {
     max-width: 900px;
     margin: 40px auto;
@@ -19,7 +24,9 @@ body {
     box-shadow: 0 12px 30px rgba(77, 163, 255, 0.2);
 }
 
-/* العناوين */
+/* ============================
+   Headings
+============================ */
 h1 {
     text-align: center;
     color: #2f80ed;
@@ -35,7 +42,9 @@ h3 {
     color: #2f80ed;
 }
 
-/* المدخلات */
+/* ============================
+   Inputs & Selects
+============================ */
 input, select {
     width: 100%;
     padding: 10px;
@@ -51,7 +60,9 @@ input:focus, select:focus {
     box-shadow: 0 0 0 2px rgba(77, 163, 255, 0.2);
 }
 
-/* الأزرار العامة */
+/* ============================
+   Buttons
+============================ */
 button {
     padding: 10px 16px;
     border: none;
@@ -85,7 +96,28 @@ button {
     background-color: #2f80ed;
 }
 
-/* الجدول */
+/* أزرار التنقل بين الصفحات */
+.nav-btn {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.nav-btn a button {
+    background: #4da3ff;
+    color: white;
+    font-size: 16px;
+    padding: 12px 22px;
+    border-radius: 10px;
+}
+
+.nav-btn a button:hover {
+    background: #2f80ed;
+}
+
+/* ============================
+   Table
+============================ */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -137,7 +169,9 @@ td[contenteditable="true"] {
     border: 2px dashed #4da3ff;
 }
 
-/* الملخص اليومي */
+/* ============================
+   Summary (اليومي والأسبوعي)
+============================ */
 .summary {
     margin-top: 25px;
     padding: 16px;
@@ -147,40 +181,41 @@ td[contenteditable="true"] {
     font-size: 18px;
     font-weight: bold;
     color: #1f5fbf;
+    box-shadow: 0 4px 12px rgba(77,163,255,0.2);
 }
 
-/* ملخص الأسبوع */
 #weekView div {
     background: #eaf4ff;
     padding: 10px;
     margin: 6px 0;
     border-radius: 8px;
-}
-
-/* زر الانتقال بين الصفحات */
-.nav-btn {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-}
-
-.nav-btn a button {
-    background: #4da3ff;
-    color: white;
     font-size: 16px;
-    padding: 12px 22px;
-    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(77,163,255,0.1);
 }
 
-.nav-btn a button:hover {
-    background: #2f80ed;
-}
-
-/* Responsive للموبايل */
+/* ============================
+   Responsive
+============================ */
 @media (max-width: 600px) {
     .container {
         margin: 20px;
         padding: 15px;
+    }
+
+    .summary {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    #weekView div {
+        font-size: 14px;
+        padding: 8px;
+        margin: 4px 0;
+    }
+
+    table th, table td {
+        font-size: 13px;
+        padding: 6px;
     }
 
     button {
@@ -188,8 +223,9 @@ td[contenteditable="true"] {
         padding: 8px 12px;
     }
 
-    th, td {
+    input, select {
+        font-size: 14px;
         padding: 8px;
-        font-size: 13px;
     }
 }
+
