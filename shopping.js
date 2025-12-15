@@ -7,12 +7,14 @@
 const firebaseConfig = {
   apiKey: "AIzaSyAwo1gaDW94XSxy2Ut3_G_nj5fCIb3d0oY",
   authDomain: "smartwallet-10702.firebaseapp.com",
+  databaseURL: "https://smartwallet-10702-default-rtdb.firebaseio.com",
   projectId: "smartwallet-10702",
-  storageBucket: "smartwallet-10702.firebasestorage.app",
+  storageBucket: "smartwallet-10702.appspot.com",
   messagingSenderId: "82577266544",
   appId: "1:82577266544:web:8dc16650691408d25ee1b5",
   measurementId: "G-GZCZ2NVPP8"
 };
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
@@ -35,9 +37,7 @@ dateInput.valueAsDate = new Date();
 
 // Events
 addBtn.addEventListener("click", addItem);
-dateInput.addEventListener("change", () => {
-  loadPlans(dateInput.value);
-});
+dateInput.addEventListener("change", () => loadPlans(dateInput.value));
 sendToWalletBtn.addEventListener("click", sendToWallet);
 
 // Load data for selected date from Firebase
@@ -51,7 +51,7 @@ function loadPlans(date) {
 
 // Save data to Firebase
 function savePlans(date) {
-  db.ref("plans/" + date).set(plans[date]);
+  return db.ref("plans/" + date).set(plans[date]);
 }
 
 // Add new item
@@ -69,14 +69,18 @@ function addItem() {
   if (!plans[date]) plans[date] = [];
   plans[date].push({ name, qty, amount });
 
-  savePlans(date);
+  savePlans(date).then(() => {
+    renderTable();
+    renderWeek();
 
-  itemName.value = "";
-  itemQty.value = "";
-  itemAmount.value = "";
-
-  renderTable();
-  renderWeek();
+    // مسح الحقول بعد الإضافة
+    itemName.value = "";
+    itemQty.value = "";
+    itemAmount.value = "";
+  }).catch(err => {
+    console.error("خطأ في حفظ البيانات:", err);
+    alert("حدث خطأ أثناء الحفظ. حاول مرة أخرى.");
+  });
 }
 
 // Render table
@@ -195,4 +199,3 @@ function renderWeek() {
 
 // Initial load
 loadPlans(dateInput.value);
-
