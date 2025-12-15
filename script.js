@@ -1,14 +1,50 @@
-let expenses = [];
+// تأكد من إضافة هذه السكربتات في HTML قبل هذا الكود
+/*
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+*/
 
+const firebaseConfig = {
+  apiKey: "AIzaSyAwo1gaDW94XSxy2Ut3_G_nj5fCIb3d0oY",
+  authDomain: "smartwallet-10702.firebaseapp.com",
+  databaseURL: "https://smartwallet-10702-default-rtdb.firebaseio.com",
+  projectId: "smartwallet-10702",
+  storageBucket: "smartwallet-10702.appspot.com",
+  messagingSenderId: "82577266544",
+  appId: "1:82577266544:web:8dc16650691408d25ee1b5",
+  measurementId: "G-GZCZ2NVPP8"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// DOM Elements
 const addBtn = document.getElementById('addBtn');
 const filterPeriod = document.getElementById('filterPeriod');
 const filterCategory = document.getElementById('filterCategory');
+const salaryInput = document.getElementById('salary');
+const tbody = document.getElementById('expenseTable').querySelector('tbody');
+const summaryDiv = document.getElementById('summary');
 
-addBtn.addEventListener('click', addExpense);
-filterPeriod.addEventListener('change', renderTable);
-filterCategory.addEventListener('change', renderTable);
+let expenses = [];
 
-function addExpense() {
+// Load data from Firebase on start
+function loadExpenses() {
+    db.ref('expenses').once('value', snapshot => {
+        expenses = snapshot.val() || [];
+        renderTable();
+        updateSummary();
+    });
+}
+
+// Save data to Firebase
+function saveExpenses() {
+    db.ref('expenses').set(expenses);
+}
+
+// Add new expense
+addBtn.addEventListener('click', () => {
     const category = document.getElementById('category').value;
     const description = document.getElementById('description').value.trim();
     const amount = parseFloat(document.getElementById('amount').value);
@@ -20,11 +56,13 @@ function addExpense() {
     }
 
     expenses.push({ category, description, amount, period });
+    saveExpenses();
     clearInputs();
     renderTable();
     updateSummary();
-}
+});
 
+// Clear input fields
 function clearInputs() {
     document.getElementById('description').value = '';
     document.getElementById('amount').value = '';
@@ -32,8 +70,8 @@ function clearInputs() {
     document.getElementById('period').value = 'يومي';
 }
 
+// Render table with filters
 function renderTable() {
-    const tbody = document.getElementById('expenseTable').querySelector('tbody');
     tbody.innerHTML = '';
 
     const periodFilter = filterPeriod.value;
@@ -59,8 +97,9 @@ function renderTable() {
     });
 }
 
+// Update summary
 function updateSummary() {
-    const salary = parseFloat(document.getElementById('salary').value) || 0;
+    const salary = parseFloat(salaryInput.value) || 0;
     let daily = 0, weekly = 0, monthly = 0;
 
     expenses.forEach(exp => {
@@ -74,7 +113,6 @@ function updateSummary() {
     const totalMonthly = daily * 30 + weekly * 4 + monthly;
     const remaining = salary - totalMonthly;
 
-    const summaryDiv = document.getElementById('summary');
     summaryDiv.innerHTML = `
         <h3>ملخص الميزانية</h3>
         <p>المجموع اليومي: ${totalDaily.toFixed(2)}</p>
@@ -84,15 +122,17 @@ function updateSummary() {
     `;
 }
 
+// Delete expense
 function deleteExpense(index) {
     if (confirm('هل أنت متأكد من حذف هذا المصروف؟')) {
         expenses.splice(index, 1);
+        saveExpenses();
         renderTable();
         updateSummary();
     }
 }
 
-// تعديل الصف مباشرة في الجدول (inline)
+// Edit row inline
 function editRow(button, index) {
     const row = button.parentElement.parentElement;
     if (button.textContent === 'تعديل') {
@@ -127,7 +167,15 @@ function editRow(button, index) {
             period: newPeriod
         };
 
+        saveExpenses();
         renderTable();
         updateSummary();
     }
 }
+
+// Filters
+filterPeriod.addEventListener('change', renderTable);
+filterCategory.addEventListener('change', renderTable);
+
+// Initial load
+loadExpenses();
