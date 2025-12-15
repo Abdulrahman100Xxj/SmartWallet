@@ -1,3 +1,4 @@
+// Firebase config (v9 compat)
 const firebaseConfig = {
   apiKey: "AIzaSyAwo1gaDW94XSxy2Ut3_G_nj5fCIb3d0oY",
   authDomain: "smartwallet-10702.firebaseapp.com",
@@ -12,6 +13,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+// DOM Elements
 const dateInput = document.getElementById("selectedDate");
 const itemName = document.getElementById("itemName");
 const itemQty = document.getElementById("itemQty");
