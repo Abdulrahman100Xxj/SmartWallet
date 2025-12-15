@@ -7,14 +7,12 @@
 const firebaseConfig = {
   apiKey: "AIzaSyAwo1gaDW94XSxy2Ut3_G_nj5fCIb3d0oY",
   authDomain: "smartwallet-10702.firebaseapp.com",
-  databaseURL: "https://smartwallet-10702-default-rtdb.firebaseio.com",
   projectId: "smartwallet-10702",
-  storageBucket: "smartwallet-10702.appspot.com",
+  storageBucket: "smartwallet-10702.firebasestorage.app",
   messagingSenderId: "82577266544",
   appId: "1:82577266544:web:8dc16650691408d25ee1b5",
   measurementId: "G-GZCZ2NVPP8"
 };
-
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
@@ -197,3 +195,4 @@ function renderWeek() {
 
 // Initial load
 loadPlans(dateInput.value);
+
