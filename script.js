@@ -1,3 +1,7 @@
+// تأكد من إضافة السكربتات في HTML:
+// <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+// <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
 // Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAwo1gaDW94XSxy2Ut3_G_nj5fCIb3d0oY",
@@ -10,6 +14,7 @@ const firebaseConfig = {
   measurementId: "G-GZCZ2NVPP8"
 };
 
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
