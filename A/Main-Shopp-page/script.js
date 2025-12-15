@@ -1,0 +1,133 @@
+let expenses = [];
+
+const addBtn = document.getElementById('addBtn');
+const filterPeriod = document.getElementById('filterPeriod');
+const filterCategory = document.getElementById('filterCategory');
+
+addBtn.addEventListener('click', addExpense);
+filterPeriod.addEventListener('change', renderTable);
+filterCategory.addEventListener('change', renderTable);
+
+function addExpense() {
+    const category = document.getElementById('category').value;
+    const description = document.getElementById('description').value.trim();
+    const amount = parseFloat(document.getElementById('amount').value);
+    const period = document.getElementById('period').value;
+
+    if (!description || !amount || amount <= 0) {
+        alert('الرجاء إدخال وصف ومبلغ صحيح');
+        return;
+    }
+
+    expenses.push({ category, description, amount, period });
+    clearInputs();
+    renderTable();
+    updateSummary();
+}
+
+function clearInputs() {
+    document.getElementById('description').value = '';
+    document.getElementById('amount').value = '';
+    document.getElementById('category').value = 'ديون';
+    document.getElementById('period').value = 'يومي';
+}
+
+function renderTable() {
+    const tbody = document.getElementById('expenseTable').querySelector('tbody');
+    tbody.innerHTML = '';
+
+    const periodFilter = filterPeriod.value;
+    const categoryFilter = filterCategory.value;
+
+    expenses.forEach((exp, index) => {
+        if ((periodFilter === 'الكل' || exp.period === periodFilter) &&
+            (categoryFilter === 'الكل' || exp.category === categoryFilter)) {
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${exp.category}</td>
+                <td>${exp.description}</td>
+                <td>${exp.amount}</td>
+                <td>${exp.period}</td>
+                <td>
+                    <button onclick="editRow(this, ${index})">تعديل</button>
+                    <button onclick="deleteExpense(${index})">حذف</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        }
+    });
+}
+
+function updateSummary() {
+    const salary = parseFloat(document.getElementById('salary').value) || 0;
+    let daily = 0, weekly = 0, monthly = 0;
+
+    expenses.forEach(exp => {
+        if (exp.period === 'يومي') daily += exp.amount;
+        else if (exp.period === 'أسبوعي') weekly += exp.amount;
+        else if (exp.period === 'شهري') monthly += exp.amount;
+    });
+
+    const totalDaily = daily + weekly / 7 + monthly / 30;
+    const totalWeekly = daily * 7 + weekly + monthly / 4;
+    const totalMonthly = daily * 30 + weekly * 4 + monthly;
+    const remaining = salary - totalMonthly;
+
+    const summaryDiv = document.getElementById('summary');
+    summaryDiv.innerHTML = `
+        <h3>ملخص الميزانية</h3>
+        <p>المجموع اليومي: ${totalDaily.toFixed(2)}</p>
+        <p>المجموع الأسبوعي: ${totalWeekly.toFixed(2)}</p>
+        <p>المجموع الشهري: ${totalMonthly.toFixed(2)}</p>
+        <p>الرصيد المتبقي: ${remaining.toFixed(2)}</p>
+    `;
+}
+
+function deleteExpense(index) {
+    if (confirm('هل أنت متأكد من حذف هذا المصروف؟')) {
+        expenses.splice(index, 1);
+        renderTable();
+        updateSummary();
+    }
+}
+
+// تعديل الصف مباشرة في الجدول (inline)
+function editRow(button, index) {
+    const row = button.parentElement.parentElement;
+    if (button.textContent === 'تعديل') {
+        row.cells[0].innerHTML = `<select>
+            <option value="ديون" ${expenses[index].category === 'ديون' ? 'selected' : ''}>ديون</option>
+            <option value="مشتريات" ${expenses[index].category === 'مشتريات' ? 'selected' : ''}>مشتريات</option>
+            <option value="مستقبلي" ${expenses[index].category === 'مستقبلي' ? 'selected' : ''}>مستقبلي</option>
+        </select>`;
+        row.cells[1].innerHTML = `<input type="text" value="${expenses[index].description}">`;
+        row.cells[2].innerHTML = `<input type="number" value="${expenses[index].amount}">`;
+        row.cells[3].innerHTML = `<select>
+            <option value="يومي" ${expenses[index].period === 'يومي' ? 'selected' : ''}>يومي</option>
+            <option value="أسبوعي" ${expenses[index].period === 'أسبوعي' ? 'selected' : ''}>أسبوعي</option>
+            <option value="شهري" ${expenses[index].period === 'شهري' ? 'selected' : ''}>شهري</option>
+        </select>`;
+        button.textContent = 'حفظ';
+    } else {
+        const newCategory = row.cells[0].querySelector('select').value;
+        const newDescription = row.cells[1].querySelector('input').value.trim();
+        const newAmount = parseFloat(row.cells[2].querySelector('input').value);
+        const newPeriod = row.cells[3].querySelector('select').value;
+
+        if (!newDescription || !newAmount || newAmount <= 0) {
+            alert('الرجاء إدخال وصف ومبلغ صحيح');
+            return;
+        }
+
+        expenses[index] = {
+            category: newCategory,
+            description: newDescription,
+            amount: newAmount,
+            period: newPeriod
+        };
+
+        renderTable();
+        updateSummary();
+    }
+}
