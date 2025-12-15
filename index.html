@@ -5,78 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartWallet</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- Firebase v9 compat -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
-<header class="header">
-    <h1>SmartWallet</h1>
-    <p>نظّم مصروفاتك وخطط مشترياتك اليومية بسهولة</p>
-
-    <!-- زر خطة المشتريات اليومية -->
-    <a href="shopping-plan.html" class="daily-btn">
-        🛒 خطة المشتريات اليومية
-    </a>
-</header>
-
 <div class="container">
+    <h1>SmartWallet</h1>
 
-    <div class="card">
-        <label>دخل الأسرة الشهري</label>
-        <input type="number" id="salary" placeholder="ادخل راتبك">
-    </div>
+    <label for="salary">دخل الأسرة الشهري:</label>
+    <input type="number" id="salary" placeholder="ادخل راتبك">
 
-    <div class="card">
-        <h2>إضافة مصروف</h2>
+    <h2>إضافة مصروف</h2>
+    <label for="category">الفئة:</label>
+    <select id="category">
+        <option value="ديون">ديون</option>
+        <option value="مشتريات">مشتريات</option>
+        <option value="مستقبلي">مستقبلي</option>
+    </select>
 
-        <label>الفئة</label>
-        <select id="category">
-            <option value="ديون">ديون</option>
-            <option value="مشتريات">مشتريات</option>
-            <option value="مستقبلي">مستقبلي</option>
-        </select>
+    <label for="description">الوصف:</label>
+    <input type="text" id="description" placeholder="مثلاً: فواتير، خضار، ...">
 
-        <label>الوصف</label>
-        <input type="text" id="description" placeholder="مثلاً: خضار، فواتير">
+    <label for="amount">المبلغ:</label>
+    <input type="number" id="amount" placeholder="ادخل المبلغ">
 
-        <label>المبلغ</label>
-        <input type="number" id="amount" placeholder="ادخل المبلغ">
+    <label for="period">الفترة:</label>
+    <select id="period">
+        <option value="يومي">يومي</option>
+        <option value="أسبوعي">أسبوعي</option>
+        <option value="شهري">شهري</option>
+    </select>
 
-        <label>الفترة</label>
-        <select id="period">
-            <option value="يومي">يومي</option>
-            <option value="أسبوعي">أسبوعي</option>
-            <option value="شهري">شهري</option>
-        </select>
+    <button id="addBtn">إضافة المصروف</button>
 
-        <button id="addBtn" class="primary-btn">إضافة المصروف</button>
-    </div>
+    <h2>فلترة المصروفات</h2>
+    <label for="filterPeriod">الفترة:</label>
+    <select id="filterPeriod">
+        <option value="الكل">الكل</option>
+        <option value="يومي">يومي</option>
+        <option value="أسبوعي">أسبوعي</option>
+        <option value="شهري">شهري</option>
+    </select>
 
-    <div class="card">
-        <h2>المصروفات</h2>
-        <table id="expenseTable">
-            <thead>
-                <tr>
-                    <th>الفئة</th>
-                    <th>الوصف</th>
-                    <th>المبلغ</th>
-                    <th>الفترة</th>
-                    <th>الإجراءات</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
+    <label for="filterCategory">الفئة:</label>
+    <select id="filterCategory">
+        <option value="الكل">الكل</option>
+        <option value="ديون">ديون</option>
+        <option value="مشتريات">مشتريات</option>
+        <option value="مستقبلي">مستقبلي</option>
+    </select>
 
-    <div class="summary">
+    <table id="expenseTable">
+        <thead>
+            <tr>
+                <th>الفئة</th>
+                <th>الوصف</th>
+                <th>المبلغ</th>
+                <th>الفترة</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <div class="summary" id="summary">
         <h3>ملخص الميزانية</h3>
-        <p>المجموع اليومي: <span id="daily">0</span></p>
-        <p>المجموع الأسبوعي: <span id="weekly">0</span></p>
-        <p>المجموع الشهري: <span id="monthly">0</span></p>
-        <p class="remaining">الرصيد المتبقي: <span id="remaining">0</span></p>
+        <p>المجموع اليومي: 0</p>
+        <p>المجموع الأسبوعي: 0</p>
+        <p>المجموع الشهري: 0</p>
+        <p>الرصيد المتبقي: 0</p>
     </div>
 
+    <a href="shopping-plan.html">
+        <button class="shopping-btn">خطة المشتريات اليومية</button>
+    </a>
 </div>
 
 <script src="script.js"></script>
