@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>SmartWallet - خطة المشتريات</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>خطة المشتريات اليومية</h1>
+
+    <label>اختر التاريخ:</label>
+    <input type="date" id="selectedDate">
+
+    <h2>إضافة غرض</h2>
+    <input type="text" id="itemName" placeholder="اسم الغرض">
+    <input type="number" id="itemQty" placeholder="الكمية" min="1">
+    <input type="number" id="itemAmount" placeholder="المبلغ" min="0">
+
+    <button id="addItemBtn">إضافة</button>
+
+    <h2>قائمة المشتريات</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>الغرض</th>
+                <th>الكمية</th>
+                <th>المبلغ</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody id="itemsTable"></tbody>
+    </table>
+
+    <div class="summary">
+        إجمالي اليوم: <span id="dayTotal">0</span>
+    </div>
+
+    <button id="sendToWallet">إضافة مشتريات اليوم إلى الميزانية</button>
+
+    <h2>ملخص الأسبوع</h2>
+    <div id="weekView"></div>
+</div>
+
+<script src="shopping.js"></script>
+</body>
+</html>
