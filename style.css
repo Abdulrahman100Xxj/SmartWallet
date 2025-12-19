@@ -1,0 +1,91 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fffefd; /* Beige */
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+}
+
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1, h2, h3 {
+    color: #0077b6; /* Sky blue */
+}
+
+label, input, select, button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+input, select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    background-color: #00b4d8; /* Sky blue */
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0077b6;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+.summary {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #caf0f8;
+    border-radius: 5px;
+}
+
+.shopping-btn {
+    margin-top: 20px;
+    background-color: #00b4d8;
+}
+
+.week-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.week-summary div {
+    background-color: #ade8f4;
+    padding: 10px;
+    border-radius: 5px;
+    flex: 1 1 calc(33% - 10px);
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .week-summary div {
+        flex: 1 1 100%;
+    }
+}
